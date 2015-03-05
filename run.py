@@ -9,11 +9,19 @@ import os
 import json
 from flask import Flask, request, Response
 from flask import render_template, send_from_directory, url_for
+from flask import Flask, render_template
+from flask.ext.socketio import SocketIO
+
+
+
+
 
 
 app = Flask(__name__)
 app.config.from_object('config')
 app.url_map.strict_slashes = False
+socketio = SocketIO(app)
+
 
 redis_info_list = []
 
@@ -46,10 +54,16 @@ class RedisInfo(threading.Thread):
         
 
 
+@socketio.on('message')
+def handle_message(message):
+    print('received message: ' + message)
+
+    
+
 if __name__ == '__main__':
     info_thread = []
     for rs in REDIS_SERVER:
         redisinfo = RedisInfo(*(rs.split(":")))
         info_thread.append(redisinfo)
         redisinfo.start()
-    app.run(debug=True)
+    socketio.run(app)
