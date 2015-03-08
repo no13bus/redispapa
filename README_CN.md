@@ -23,9 +23,9 @@
 
 ## 截图
 
-![1](https://raw.githubusercontent.com/no13bus/redispapa/master/1.png) 
-![2](https://raw.githubusercontent.com/no13bus/redispapa/master/2.png) 
-![3](https://raw.githubusercontent.com/no13bus/redispapa/master/3.png)
+![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png) 
+![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png) 
+![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
 
 
 ## 相关项目连接
