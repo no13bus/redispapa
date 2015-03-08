@@ -1,5 +1,5 @@
 # RedisPAPA
-利用redis的`info`信息对redis的使用情况进行监控。用到的技术：angular flask socket.io
+利用redis的`info`信息对redis的使用情况进行监控。用到的技术：angular flask socket.io. PAPA是Dad的意思。
 >  官方文档推荐使用info，而不是monitor(因为其会大大降低redis的负载)。
 ================
 

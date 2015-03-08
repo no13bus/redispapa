@@ -1,5 +1,5 @@
 # RedisPAPA
-we use `redis info` to monitor the redis usage.
+we use `redis info` to monitor the redis usage. PAPA means a father who is monitoring the redis.
 >  accoding to the [redis doc](http://redis.io/commands/info), it is be recommanded to use `info` other than `monitor`. 
 
 ================
