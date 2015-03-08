@@ -1,6 +1,7 @@
 # RedisPAPA
 利用redis的`info`信息对redis的使用情况进行监控。用到的技术：angular flask socket.io. PAPA是Dad的意思。
->  官方文档推荐使用info，而不是monitor(因为其会大大降低redis的负载)。
+官方文档推荐使用info，而不是monitor(因为其会大大降低redis的负载)。
+
 ================
 
 ## 开始使用
@@ -21,9 +22,9 @@
 
 ## 截图
 
-![1](https://github.com/no13bus/redispapa) 
-![2](https://github.com/no13bus/redispapa) 
-![3](https://github.com/no13bus/redispapa) 
+![1](https://raw.githubusercontent.com/no13bus/redispapa/master/1.png) 
+![2](https://raw.githubusercontent.com/no13bus/redispapa/master/2.png) 
+![3](https://raw.githubusercontent.com/no13bus/redispapa/master/3.png)
 
 
 ## 相关项目连接

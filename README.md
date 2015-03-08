@@ -4,7 +4,7 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 
 ================
 
-[中文文档](https://github.com/no13bus/redispapa)
+[中文文档](https://github.com/no13bus/redispapa/blob/master/README_CN.md)
 
 ## Let's start
 - `pip install -r requirements.txt`
@@ -23,9 +23,9 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 - the good part of angular is two way bindings, when you change the redis server ip in the front-end select element, you will get a new front-end immediately.
 
 ## Project Screen
-![1](https://github.com/no13bus/redispapa) 
-![2](https://github.com/no13bus/redispapa) 
-![3](https://github.com/no13bus/redispapa)
+![1](https://raw.githubusercontent.com/no13bus/redispapa/master/1.png) 
+![2](https://raw.githubusercontent.com/no13bus/redispapa/master/2.png) 
+![3](https://raw.githubusercontent.com/no13bus/redispapa/master/3.png)
 
 ## The links
 - [redis stat](https://github.com/junegunn/redis-stat)
