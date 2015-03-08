@@ -1,0 +1,68 @@
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="../" class="navbar-brand">RedisPAPA</a>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li>
+                  <a href="https://github.com/no13bus/redispapa" target="_blank"><i class="fa fa-github"></i> Github</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <div class="col-lg-12">
+                    <select class="form-control" ng-model="server">
+                        <option ng-repeat="s in servers">{{ s }}</option>
+                    </select>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h3 class="text-danger">{{ error_msg }}</h3>
+    <h3 class="text-info">Charts</h3>
+    <div class="row" style="margin:50px auto">
+        <highchart id="commands" config="chartConfig_cmd" class="col-md-4"></highchart>
+        <highchart id="cpu" config="chartConfig_cpu" class="col-md-4"></highchart>
+        <highchart id="mem" config="chartConfig_mem" class="col-md-4"></highchart>
+    </div>
+    <h3 class="text-info">Table</h3>
+    <div class="row">
+        <table id="table" class="table table-bordered col-md-5 table-striped">
+            <th>time</th>
+            <th>us</th>
+            <th>sy</th>
+            <th>cl</th>
+            <th>bcl</th>
+            <th>mem</th>
+            <th>rss</th>
+            <th>keys</th>
+            <th>cmd/s</th>
+            <th>exp/s</th>
+            <th>evt/s</th>
+            <th>hit/s</th>
+            <th>mis/s</th>
+            <th>aofcs</th>
+            <tr ng-repeat="row in table track by $index">
+                <td ng-repeat="td in row track by $index">
+                    {{ td }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <h3 class="text-info">Redis-Server</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <table id="stat" class="table table-bordered table-striped">
+                <tr ng-repeat="(k, v) in stat track by $index">
+                    <td style="font-weight: bold;">{{ k }}</td>
+                    <td>{{ v }}</td>
+
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
