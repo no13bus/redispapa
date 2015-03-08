@@ -6,7 +6,8 @@
 
 ## 开始使用
 - `pip install -r requirements.txt`
-- 配置好config.py内的需要监控的redis服务器的相关信息
+- 配置好config.py内的需要监控的redis服务器的相关信息.
+- REDIS_SERVER服务器的类型这样 `['ip:port:pawword', 'ip:port', .....]`
 - `python run.py` 即可进行redis服务监控
 
 ## 使用到的技术
