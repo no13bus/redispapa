@@ -176,4 +176,4 @@ for r in REDIS_SERVER:
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0', port=5000)

@@ -18,6 +18,10 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 - [socket.io](http://socket.io/)
 - [highchart](http://www.highcharts.com/)
 
+## demo website
+http://106.186.117.185:5000
+
+
 ## Project Details
 - we use flask to start serveral threads which is equal to your redis server amount，and then send infomation to the front-end at regular time by socket.io.
 - we use angular to render the front-end。angular will get the data from socket.io and then render the templates with highchart-ng and ngSocketIO.

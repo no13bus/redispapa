@@ -16,6 +16,10 @@
 - socket.io
 - highchart
 
+## demo website
+http://106.186.117.185:5000
+
+
 ## 说明
 - flask的后台会开启多个监控redis的线程，定时通过socket.io向前台发送info信息。flask在这个项目里面的主要作用就是socket.io的后台，不会对前台的模板进行渲染。
 - angular 承担了主要的前端模板渲染工作。angular会将socket.io接受到的数据利用highchart-ng和ng-socket-io这2个库对前端的图表进行渲染。
