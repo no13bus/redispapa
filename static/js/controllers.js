@@ -3,6 +3,10 @@
 /* Controllers */
 myApp.controller('RedisCtl', function($scope, $routeParams, socket) {
     // $scope.id = $routeParams.id;
+
+    $scope.send_command = function(command, args, r_server){
+        socket.emit('command_exec', {command: command, args:args, r_server: r_server});
+    }
     //highchart
     $scope.chartConfig_cmd = {
         options: {
@@ -153,12 +157,21 @@ myApp.controller('RedisCtl', function($scope, $routeParams, socket) {
             data: 'I\'m connected!'
         });
     });
+    socket.on('result', function(msg){
+          $scope.result = 'Time:' + new Date() + ' : ' + msg.data;
+//        if($scope.results){
+//            $scope.results.push('Time:' + new Date() + ' : ' + msg.data);
+//        }else{
+//            $scope.results = [];
+//        }
+
+    });
     socket.on('servers', function(msg) {
         $scope.servers = msg.data;
         $scope.server = msg.data[0];
     });
     socket.on('disconnect', function() {
-        $scope.error_msg = 'Disconnected..';
+        $scope.error_msg = 'Oh! The server is disconnected.Please check!';
     });
     // event handler for server sent data
     // the data is displayed in the "Received" section of the page

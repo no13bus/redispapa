@@ -46,12 +46,15 @@ class RedisInfo(threading.Thread):
         self.mem = 0
         self.event = threading.Event()
 
-    def exec_cmd(self, cmd, *args):
+    def exec_cmd(self, *args):
         try:
-            cmd_method = getattr(self.client, cmd.lower())
-            result = cmd_method(args)
-            socketio.emit('result', {'data': result})
+            cmd_method = getattr(self.client, args[0].lower())
+            result = cmd_method(*args[1:])
+            if not result:
+                result = 'None'
+            emit('result', {'data': result})
         except Exception as ex:
+            emit('result', {'data': 'error'})
             print ex.message
 
     def run(self):
@@ -154,10 +157,21 @@ def client_message(message):
     servers = [':'.join(s.split(':')[:2]) for s in REDIS_SERVER]
     emit('servers', {'data': servers})
 
-@socketio.on('command')
-def client_message(message):
-    servers = [':'.join(s.split(':')[:2]) for s in REDIS_SERVER]
-    emit('servers', {'data': servers})
+@socketio.on('command_exec')
+def client_command(message):
+    args = message['args']
+    args = tuple(args.split(','))
+    cmd = message['command']
+    args = (cmd,) + args
+    print(args)
+    r_server =  message['r_server']
+    cmd_threads = [t for t in all_thread if '{0}:{1}'.format(t.host, t.port) == r_server]
+    print(cmd_threads)
+    if cmd_threads:
+        cmd_thread = cmd_threads[0]
+        cmd_thread.exec_cmd(*args)
+    else:
+        emit('result', {'data': 'I can not find the redis server'})
 
 
 @socketio.on('connect')
