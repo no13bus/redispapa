@@ -46,6 +46,14 @@ class RedisInfo(threading.Thread):
         self.mem = 0
         self.event = threading.Event()
 
+    def exec_cmd(self, cmd, *args):
+        try:
+            cmd_method = getattr(self.client, cmd.lower())
+            result = cmd_method(args)
+            socketio.emit('result', {'data': result})
+        except Exception as ex:
+            print ex.message
+
     def run(self):
         while 1:
             try:
@@ -142,6 +150,11 @@ def index():
 
 
 @socketio.on('event')
+def client_message(message):
+    servers = [':'.join(s.split(':')[:2]) for s in REDIS_SERVER]
+    emit('servers', {'data': servers})
+
+@socketio.on('command')
 def client_message(message):
     servers = [':'.join(s.split(':')[:2]) for s in REDIS_SERVER]
     emit('servers', {'data': servers})

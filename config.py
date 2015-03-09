@@ -7,3 +7,13 @@ TABLE_MAX_ROWS = 10
 # flaks debug mode
 DEBUG = False
 SECRET_KEY = 'temporary_secret_key'
+
+
+
+####dev enviriment or deploy enviriment
+import socket
+if socket.gethostname() == 'jqh-virtual-machine' or socket.gethostname() == 'no13busdeMacBook-Air.local' or socket.gethostname() == 'localhost':
+    try:
+        from config_dev import *
+    except ImportError:
+        pass
