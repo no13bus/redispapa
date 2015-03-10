@@ -56,9 +56,7 @@ class RedisInfo(threading.Thread):
             if not result:
                 result = 'None'
             emit('result', {'data': result, 'm_type': 'info'})
-            print 'info'
         except Exception as ex:
-            print 'error'
             emit('result', {'data': ex.message, 'm_type': 'error'})
             print '\033[93m %s \033[0m' % ex.message
 
