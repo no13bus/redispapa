@@ -1,3 +1,0 @@
-#coding: utf-8
-REDIS_SERVER = ["127.0.0.1:6379", "182.92.155.88:6379"]
-DEBUG = True

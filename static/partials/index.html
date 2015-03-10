@@ -20,10 +20,6 @@
         </div>
     </div>
 </div>
-
-<h3>{{ server }}</h3>
-
-
 <div class="container">
     <div class="row" style="padding: 10px;" ng-if="error_msg">
         <div class="alert alert-dismissible alert-danger col-md-4">
@@ -89,9 +85,15 @@
                 <button class="btn btn-primary" ng-click="send_command(command,args,server)">Send!</button>
 
             </div>
-            <div class="well well-lg" ng-if="result">
+           <!--  <div class="well well-lg" ng-if="results">
+                <p ng-repeat="r in results track by $index">{{ r }}</p>
+            </div> -->
+            <div class="well well-lg" ng-if="result" data-ng-bind-html="result">
                 <p>{{ result }}</p>
             </div>
+           <!--  <div class="well well-lg" ng-if="result">
+                <p>{{ result }}</p>
+            </div> -->
         </div>
     </div>
 </div>

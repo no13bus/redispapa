@@ -48,14 +48,19 @@ class RedisInfo(threading.Thread):
 
     def exec_cmd(self, *args):
         try:
-            cmd_method = getattr(self.client, args[0].lower())
+            cmd_name = args[0].lower()
+            if cmd_name == 'del':
+                cmd_name = 'delete'
+            cmd_method = getattr(self.client, cmd_name)
             result = cmd_method(*args[1:])
             if not result:
                 result = 'None'
-            emit('result', {'data': result})
+            emit('result', {'data': result, 'm_type': 'info'})
+            print 'info'
         except Exception as ex:
-            emit('result', {'data': 'error'})
-            print ex.message
+            print 'error'
+            emit('result', {'data': ex.message, 'm_type': 'error'})
+            print '\033[93m %s \033[0m' % ex.message
 
     def run(self):
         while 1:
@@ -163,10 +168,9 @@ def client_command(message):
     args = tuple(args.split(','))
     cmd = message['command']
     args = (cmd,) + args
-    print(args)
     r_server =  message['r_server']
     cmd_threads = [t for t in all_thread if '{0}:{1}'.format(t.host, t.port) == r_server]
-    print(cmd_threads)
+    # print(cmd_threads)
     if cmd_threads:
         cmd_thread = cmd_threads[0]
         cmd_thread.exec_cmd(*args)

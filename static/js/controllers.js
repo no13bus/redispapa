@@ -1,11 +1,8 @@
 'use strict';
 
 /* Controllers */
-myApp.controller('RedisCtl', function($scope, $routeParams, $filter, socket) {
-    // $scope.id = $routeParams.id;
-
+myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socket) {
     $scope.send_command = function(command, args, r_server){
-        console.log(r_server);
         socket.emit('command_exec', {command: command, args:args, r_server: r_server});
     }
     //highchart
@@ -152,21 +149,27 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, socket) {
                 });
             }
         }
-        // Listening to an event
+
     socket.on('connect', function() {
+        $scope.error_msg = null;
         socket.emit('event', {
             data: 'I\'m connected!'
         });
     });
-    socket.on('result', function(msg){
-          $scope.result = 'Time:' + $filter(new Date(), 'h-m-s') + ' : ' + msg.data;
-//        if($scope.results){
-//            $scope.results.push('Time:' + new Date() + ' : ' + msg.data);
-//        }else{
-//            $scope.results = [];
-//        }
 
+    socket.on('result', function(msg){
+        // $scope.result = "Time: " + $filter('date')(new Date(), "hh:mm:ss") + " Result: " + msg.data;
+        // $scope.results.push('Time: ' + $filter('date')(new Date(), "hh:mm:ss") + " Result: " + msg.data);
+
+        // I don not know why there are two response msg here????
+        console.log(msg.m_type);
+        if (msg.m_type == 'info') {
+            $scope.result = $sce.trustAsHtml("Time: " + $filter('date')(new Date(), "hh:mm:ss") + "<span class='text-info'>" + " Result: " + msg.data + "</span>");
+        } else{
+            $scope.result = $sce.trustAsHtml("Time: " + $filter('date')(new Date(), "hh:mm:ss") + "<span class='text-danger'>" + " Result: " + msg.data + "</span>");
+        }
     });
+
     socket.on('servers', function(msg) {
         $scope.servers = msg.data;
         $scope.server = msg.data[0];
@@ -174,8 +177,6 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, socket) {
     socket.on('disconnect', function() {
         $scope.error_msg = 'Oh! The server is disconnected.Please check!';
     });
-    // event handler for server sent data
-    // the data is displayed in the "Received" section of the page
     socket.on('response', function(msg) {
         if ($scope.server == msg.server) {
             $scope.stat = msg.stat;
