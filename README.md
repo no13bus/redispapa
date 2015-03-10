@@ -23,6 +23,7 @@ http://106.186.117.185:5000
 
 
 ## Project Details
+- we do not use any database to store the redis information, we store the data in the memory.
 - we use flask to start serveral threads which is equal to your redis server amount，and then send infomation to the front-end at regular time by socket.io.
 - we use angular to render the front-end。angular will get the data from socket.io and then render the templates with highchart-ng and ngSocketIO.
 - the good part of angular is two way bindings, when you change the redis server ip in the front-end select element, you will get a new front-end immediately.
@@ -35,8 +36,8 @@ http://106.186.117.185:5000
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
 
 ## version 0.2
-new feature: exectute redis commands in the website.
-In the website, you can type `set` in `command input box`, and type `a, papapa` in `args input box`
+- new feature: exectute redis commands in the website.
+- In the website, you can type `set` in `command input box`, and type `a, papapa` in `args input box`
 or you can type `get` in `command input box`, and type `a` in `args input box. Then you can get the result
 from the redis server.
 

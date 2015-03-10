@@ -1,5 +1,5 @@
 # RedisPAPA
-利用redis的`info`信息对redis的使用情况进行监控。用到的技术：angular flask socket.io. PAPA是Dad的意思。
+> 利用redis的`info`信息对redis的使用情况进行监控。用到的技术：angular flask socket.io. PAPA是Dad的意思。
 官方文档推荐使用info，而不是monitor(因为其会大大降低redis的负载)。
 
 ================
@@ -21,6 +21,7 @@ http://106.186.117.185:5000
 
 
 ## 说明
+- 该项目没有使用任何数据库对监控信息进行存储，只是将监控到的前几个数据点保存到了内存中供前台调用。
 - flask的后台会开启多个监控redis的线程，定时通过socket.io向前台发送info信息。flask在这个项目里面的主要作用就是socket.io的后台，不会对前台的模板进行渲染。
 - angular 承担了主要的前端模板渲染工作。angular会将socket.io接受到的数据利用highchart-ng和ng-socket-io这2个库对前端的图表进行渲染。
 - angular 的优点就是双向绑定，在前端切换不同的redis服务器的时候，只需要点选不同的选项，模型随之改变，前端页面就会随之改变。开发过程非常顺畅。
@@ -34,8 +35,8 @@ http://106.186.117.185:5000
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
 
 ## version 0.2
-加入新特性: 在前端执行redis命令, 返回执行结果。
-执行方法如下: 网页上的command内写redis命令, args写命令的各个参数.
+- 加入新特性: 在前端执行redis命令, 返回执行结果。
+- 执行方法如下: 网页上的command内写redis命令, args写命令的各个参数.
 比如command内写 `set`, args内写 `a, papapa`
 再比如command内写 `get`, args内写 `a`
 
