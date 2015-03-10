@@ -31,10 +31,14 @@ http://106.186.117.185:5000
 ![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png) 
 ![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png) 
 ![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
-![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
+![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/4.png)
+![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
 
 ## version 0.2
-new feature: exectute redis commands in the website
+new feature: exectute redis commands in the website.
+In the website, you can type `set` in `command input box`, and type `a, papapa` in `args input box`
+or you can type `get` in `command input box`, and type `a` in `args input box. Then you can get the result
+from the redis server.
 
 ## version 0.1
 supply kinds of information of redis server
