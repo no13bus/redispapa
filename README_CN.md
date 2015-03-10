@@ -27,11 +27,16 @@ http://106.186.117.185:5000
 
 ## 截图
 
-
 ![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png) 
 ![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png) 
 ![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
+![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
 
+## version 0.2
+加入新特性: 在前端执行redis命令, 返回执行结果。
+
+## version 0.1
+提供了redis-server的info的监控信息
 
 ## 相关项目连接
 - [redis stat](https://github.com/junegunn/redis-stat)

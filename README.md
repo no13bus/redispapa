@@ -31,6 +31,13 @@ http://106.186.117.185:5000
 ![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png) 
 ![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png) 
 ![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
+![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
+
+## version 0.2
+new feature: exectute redis commands in the website
+
+## version 0.1
+supply kinds of information of redis server
 
 ## The links
 - [redis stat](https://github.com/junegunn/redis-stat)
@@ -38,3 +45,4 @@ http://106.186.117.185:5000
 - [ng-socket-io](https://github.com/mbenford/ngSocketIO)
 - [angular](https://github.com/angular/angular)
 - [flask](https://github.com/mitsuhiko/flask)
+
