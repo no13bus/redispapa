@@ -1,10 +1,11 @@
 'use strict';
 
 /* Controllers */
-myApp.controller('RedisCtl', function($scope, $routeParams, socket) {
+myApp.controller('RedisCtl', function($scope, $routeParams, $filter, socket) {
     // $scope.id = $routeParams.id;
 
     $scope.send_command = function(command, args, r_server){
+        console.log(r_server);
         socket.emit('command_exec', {command: command, args:args, r_server: r_server});
     }
     //highchart
@@ -158,7 +159,7 @@ myApp.controller('RedisCtl', function($scope, $routeParams, socket) {
         });
     });
     socket.on('result', function(msg){
-          $scope.result = 'Time:' + new Date() + ' : ' + msg.data;
+          $scope.result = 'Time:' + $filter(new Date(), 'h-m-s') + ' : ' + msg.data;
 //        if($scope.results){
 //            $scope.results.push('Time:' + new Date() + ' : ' + msg.data);
 //        }else{
