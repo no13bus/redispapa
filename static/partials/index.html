@@ -39,19 +39,19 @@
     <div class="row">
         <table id="table" class="table table-bordered col-md-5 table-striped">
             <th>time</th>
-            <th>us</th>
-            <th>sy</th>
-            <th>cl</th>
-            <th>bcl</th>
-            <th>mem</th>
-            <th>rss</th>
-            <th>keys</th>
-            <th>cmd/s</th>
-            <th>exp/s</th>
-            <th>evt/s</th>
-            <th>hit/s</th>
-            <th>mis/s</th>
-            <th>aofcs</th>
+            <th><span class="tip defaultTip" title="used_cpu_user">us</span></th>
+            <th><span class="tip defaultTip" title="used_cpu_system">sy</span></th>
+            <th><span class="tip defaultTip" title="connected_clients">cl</span></th>
+            <th><span class="tip defaultTip" title="blocked_clients">bcl</span></th>
+            <th><span class="tip defaultTip" title="used_memory">mem</span></th>
+            <th><span class="tip defaultTip" title="used_memory_rss">rss</span></th>
+            <th><span class="tip defaultTip" title="keys">keys</span></th>
+            <th><span class="tip defaultTip" title="total_commands/second">cmd/s</span></th>
+            <th><span class="tip defaultTip" title="expired_keys/second">exp/s</span></th>
+            <th><span class="tip defaultTip" title="evicted_keys/second">evt/s</span></th>
+            <th><span class="tip defaultTip" title="keyspace_hits/second">hit/s</span></th>
+            <th><span class="tip defaultTip" title="keyspace_misses/second">mis/s</span></th>
+            <th><span class="tip defaultTip" title="aof_current_size/second">aofcs/s</span></th>
             <tr ng-repeat="row in table track by $index">
                 <td ng-repeat="td in row track by $index">
                     {{ td }}
@@ -97,3 +97,9 @@
         </div>
     </div>
 </div>
+
+<script>
+        $(document).ready(function() {
+            $('.defaultTip').tooltip();
+        });
+</script>
