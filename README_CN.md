@@ -9,6 +9,7 @@
 - 配置好config.py内的需要监控的redis服务器的相关信息.
 - REDIS_SERVER服务器的类型这样 `['ip:port:pawword', 'ip:port', .....]`
 - `python run.py` 即可进行redis服务监控
+- 如果线上部署的话，推荐使用gunicorn部署. `gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker run:app -b 0.0.0.0:5000`
 
 ## 使用到的技术
 - angular
