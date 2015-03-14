@@ -29,11 +29,37 @@ http://106.186.117.185:5000
 
 ## 截图
 
-![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png) 
-![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png) 
+![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png)
+![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png)
 ![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/4.png)
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
+
+## version 0.3
+- 支持docker: 现在可以直接从docker hub下载最新的[redispapa的镜像](https://registry.hub.docker.com/u/sinchb/redispapa/):
+
+```
+docker pull sinchb/redispapa
+```
+
+用默认配置启动一个redispapa实例:
+
+```
+docker run -p 5000:5000 sinchb/redispapa
+```
+
+用自己的config.py配置启动一个redispapa实例:
+
+```
+docker run -p 5000:5000 -v /path/to/config.py:/root/redispapa/config.py sinchb/redispapa
+```
+
+如果要build自己的redispapa 镜像，请先克隆本项目，然后运行:
+
+```
+cd /path/to/your/redispapa/
+docker build -t=your-redispapa-tag .
+```
 
 ## version 0.2
 - 加入新特性: 在前端执行redis命令, 返回执行结果。

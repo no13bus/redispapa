@@ -18,6 +18,7 @@ app.config.from_object('config')
 socketio = SocketIO(app)
 all_thread = []
 
+__version__ = '0.3'
 
 class RedisInfo(threading.Thread):
     """threads for RedisInfo"""
@@ -76,7 +77,7 @@ class RedisInfo(threading.Thread):
                 self.status['connected_slaves'] = redis_info['connected_slaves']
                 self.status['rdb_bgsave_in_progress'] = redis_info['rdb_bgsave_in_progress'] if 'rdb_bgsave_in_progress' in redis_info else ''
                 self.status['rdb_last_save_time'] = redis_info['rdb_last_save_time'] if 'rdb_last_save_time' in redis_info else ''
-                
+
                 # table
                 self.table_row = []
                 # nowtime = datetime.datetime.now().strftime("%H:%M:%S")

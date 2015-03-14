@@ -1,10 +1,10 @@
 # RedisPAPA
 we use `redis info` to monitor the redis usage. PAPA means a father who is monitoring the redis.
->  accoding to the [redis doc](http://redis.io/commands/info), it is be recommanded to use `info` other than `monitor`. 
+>  accoding to the [redis doc](http://redis.io/commands/info), it is be recommanded to use `info` other than `monitor`.
 
 ================
 
-[中文文档](https://github.com/no13bus/redispapa/blob/master/README_CN.md)
+[中文文档](https://github.com/sinchb/redispapa/blob/master/README_CN.md)
 
 ## Let's start
 - `pip install -r requirements.txt`
@@ -30,11 +30,37 @@ http://106.186.117.185:5000
 - the good part of angular is two way bindings, when you change the redis server ip in the front-end select element, you will get a new front-end immediately.
 
 ## Project Screen
-![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png) 
-![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png) 
+![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png)
+![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png)
 ![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/4.png)
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
+
+## version 0.3
+- docker support: you can pull the [docker image of redispapa](https://registry.hub.docker.com/u/sinchb/redispapa/) from docker hub
+
+  ```
+  docker pull sinchb/redispapa
+  ```
+
+  to start a redispapa instance with default settings:
+
+  ```
+  docker run -p 5000:5000 sinchb/redispapa
+  ```
+
+  If you want to use your own config.py:
+
+  ```
+  docker run -p 5000:5000 -v /path/to/config.py:/root/redispapa/config.py sinchb/redispapa
+  ```
+
+  If you want to build your own docker image, please clone this repo, and run:
+
+  ```
+  cd /path/to/your/redispapa/
+  docker build -t=your-redispapa-tag .
+  ```
 
 ## version 0.2
 - new feature: exectute redis commands in the website.
