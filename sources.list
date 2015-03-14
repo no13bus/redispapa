@@ -1,0 +1,25 @@
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty main restricted
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty main restricted
+
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty-updates main restricted
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty-updates main restricted
+
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty universe
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty universe
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty-updates universe
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty-updates universe
+
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty multiverse
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty multiverse
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty-updates multiverse
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty-updates multiverse
+
+deb http://cn.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
+deb-src http://cn.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse
+
+deb http://security.ubuntu.com/ubuntu trusty-security main restricted
+deb-src http://security.ubuntu.com/ubuntu trusty-security main restricted
+deb http://security.ubuntu.com/ubuntu trusty-security universe
+deb-src http://security.ubuntu.com/ubuntu trusty-security universe
+deb http://security.ubuntu.com/ubuntu trusty-security multiverse
+deb-src http://security.ubuntu.com/ubuntu trusty-security multiverse
