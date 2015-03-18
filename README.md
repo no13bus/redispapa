@@ -13,7 +13,7 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 - type this command `python run.py`, then you can watch it in `http://127.0.0.1:5000`
 - we recommand use this command to deploy: `gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker run:app -b 0.0.0.0:5000`
 
-## the tech we use
+## The tech we use
 - [Angular](https://github.com/angular/angular)
 - [Flask](https://github.com/mitsuhiko/flask)
 - [Socket.io](http://socket.io/)
