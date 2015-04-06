@@ -6,7 +6,7 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 
 [![repo](http://ohmyrepo.ml/static/ohmyrepo.png)](http://ohmyrepo.ml/show?u=no13bus&r=redispapa)
 
-[中文文档](https://github.com/sinchb/redispapa/blob/master/README_CN.md)
+[中文文档](https://github.com/no13bus/redispapa/blob/master/README_CN.md)
 
 ## Let's start
 - `pip install -r requirements.txt`
