@@ -4,8 +4,6 @@
 
 ================
 
-[![repo](http://ohmyrepo.ml/static/ohmyrepo.png)](http://ohmyrepo.ml/show?u=no13bus&r=redispapa)
-
 ## 开始使用
 - `pip install -r requirements.txt`
 - 配置好config.py内的需要监控的redis服务器的相关信息.
@@ -20,7 +18,7 @@
 - highchart
 
 ## demo website
-http://redispapa.ml:5000
+http://106.186.117.185:5000
 
 
 ## 说明
