@@ -18,7 +18,7 @@
 - highchart
 
 ## demo website
-http://106.186.117.185:5000
+http://www.no13bus.com:5000
 
 
 ## 说明
