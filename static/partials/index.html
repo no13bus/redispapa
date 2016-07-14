@@ -4,11 +4,11 @@
             <a href="../" class="navbar-brand">RedisPAPA</a>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
-            <ul class="nav navbar-nav">
+            <!--ul class="nav navbar-nav">
                 <li>
                   <a href="https://github.com/no13bus/redispapa" target="_blank"><i class="fa fa-github"></i> Github</a>
                 </li>
-            </ul>
+            </ul-->
 
             <ul class="nav navbar-nav navbar-right">
                 <div class="col-lg-12">
@@ -72,6 +72,7 @@
             </table>
         </div>
         <div class="col-md-8">
+            
             <h3 class="text-info">Command Exec</h3>
             <div class="form-inline" style="margin: 10px;">
               <div class="form-group">
@@ -91,9 +92,47 @@
             <div class="well well-lg" ng-if="result" data-ng-bind-html="result">
                 <p>{{ result }}</p>
             </div>
-           <!--  <div class="well well-lg" ng-if="result">
-                <p>{{ result }}</p>
-            </div> -->
+        </div>
+    </div>
+
+
+    <div class="row">
+        
+        <div class="col-md-12">
+            <h3 class="text-info">Command Analysis</h3>
+            <form name="myForm" class="form-inline" style="margin: 10px;">
+                <p class="text-warning">Note:command Analysis will impact the server,so do not use it too often!</p>
+                <button class="btn btn-primary" ng-click="send_command_monitor()" ng-disabled="monitoring || !duration">Analysis!</button>
+                <label>Duration:
+                    <input type="number" ng-model="duration" name="duration" min="5" max="120" required>(seconds)
+                </label>
+
+                <p class="text-danger" ng-if="!duration">Duration should be more than 5 secs and less than 120 secs<p> 
+
+            </form>
+            <div class="well well-lg" ng-if="commands_time">
+                <h4 class="text-info">Commands Time Distribution</h3>
+                <p>{{ commands_time }}</p>
+            </div>
+            <div class="well well-lg" ng-if="heaviest_commands">
+                <h4 class="text-info">Heaviest Commands</h3>
+                <p>{{ heaviest_commands }}</p>
+            </div>
+            <div class="well well-lg" ng-if="slowest_commands">
+                <h4 class="text-info">Slowest Commands</h3>
+                <p>{{ slowest_commands }}</p>
+            </div>
+            <div class="well well-lg" ng-if="top_commands">
+                <h4 class="text-info">Top Commands</h3>
+                <p>{{ top_commands }}</p>
+            </div>
+            <div class="well well-lg" ng-if="top_keys">
+                <h4 class="text-info">Top Keys</h3>
+                <p>{{ top_keys }}</p>
+            </div>
+            <div class="well well-lg" ng-if="result_monitor" data-ng-bind-html="result_monitor">
+                <p>{{ result_monitor }}</p>
+            </div>
         </div>
     </div>
 </div>

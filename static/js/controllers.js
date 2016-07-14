@@ -1,9 +1,23 @@
 'use strict';
 
 /* Controllers */
-myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socket) {
+myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socket,$interval) {
+    
+    $scope.duration = 10;
+
+
     $scope.send_command = function(command, args, r_server){
         socket.emit('command_exec', {command: command, args:args, r_server: r_server});
+    }
+    $scope.send_command_monitor = function(){
+        $scope.monitoring = true;
+        $scope.result_monitor = null;
+        $scope.commands_time = null
+        $scope.heaviest_commands = null;
+        $scope.slowest_commands = null;
+        $scope.top_commands = null;
+        $scope.top_keys = null;
+        socket.emit('monitor_command_exec', {r_server: $scope.server, duration: $scope.duration});
     }
     //highchart
     $scope.chartConfig_cmd = {
@@ -170,6 +184,25 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socke
         }
     });
 
+    function parseResult(data) {
+        $scope.commands_time = JSON.stringify(data['commands_time']);
+        $scope.heaviest_commands = JSON.stringify(data['heaviest_commands']);
+        $scope.slowest_commands = JSON.stringify(data['slowest_commands']);
+        $scope.top_commands = JSON.stringify(data['top_commands']);
+        $scope.top_keys = JSON.stringify(data['top_keys']);
+    }
+
+    socket.on('result_monitor', function(msg){
+        $scope.monitoring = false;
+        if (msg.m_type == 'info' && msg.data) {
+            parseResult(msg.data);
+        } else if (msg.m_type == 'error'){
+            $scope.result_monitor = $sce.trustAsHtml("<span class='text-danger'>" + " Result: " + msg.data + "</span>");
+        } else{
+           $scope.result_monitor =  $sce.trustAsHtml("<span class='text-info'>no activities in server</span>");
+        }
+    });
+
     socket.on('servers', function(msg) {
         $scope.servers = msg.data;
         $scope.server = msg.data[0];
@@ -177,13 +210,31 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socke
     socket.on('disconnect', function() {
         $scope.error_msg = 'Oh! The server is disconnected.Please check!';
     });
+
+    String.prototype.replaceAll = function(search, replacement) {
+        var target = this;
+        return target.replace(new RegExp(search, 'g'), replacement);
+    };
+
+    function translate(data) {
+        $scope.stat = {};
+        angular.forEach(data, function(value, key) {
+          $scope.stat[key.replaceAll('redis','cacheone')] = value;
+        }, $scope.stat);
+        return $scope.stat;
+    }
+
     socket.on('response', function(msg) {
         if ($scope.server == msg.server) {
-            $scope.stat = msg.stat;
+            $scope.stat = translate(msg.stat);
             $scope.table = msg.table;
             handler_cmd(msg.commands);
             handler_cpu(msg.cpu);
             handler_mem(msg.mem);
         }
     });
+
+    // $interval( function(){ $scope.send_command_monitor(); }, 120000);
+
+    
 });

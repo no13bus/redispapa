@@ -5,11 +5,13 @@ import signal
 import sys
 import time
 import redis
+from threading import Timer
 from flask import Flask, render_template, session, request, send_from_directory, make_response
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, disconnect
+from config import *
+from redismonitor import *
 from gevent import monkey
 monkey.patch_all()
-from config import *
 
 
 app = Flask(__name__)
@@ -19,6 +21,9 @@ socketio = SocketIO(app)
 all_thread = []
 
 __version__ = '0.3'
+
+
+
 
 class RedisInfo(threading.Thread):
     """threads for RedisInfo"""
@@ -142,6 +147,7 @@ class RedisInfo(threading.Thread):
                 })
             except Exception as ex:
                 print ex.message
+
             time.sleep(INFO_INTERVAL)
 
     def is_stop(self):
@@ -176,6 +182,30 @@ def client_command(message):
     else:
         emit('result', {'data': 'I can not find the redis server'})
 
+def stopMonitor(r_monitor):
+    try:
+        r_monitor.stop()
+        socketio.emit('result_monitor', {'data': r_monitor.getResult(), 'm_type': 'info'})
+    except Exception as ex:
+        socketio.emit('result_monitor', {'data': ex.message, 'm_type': 'error'})
+        # print '\033[93m %s \033[0m' % ex.message
+        raise
+
+@socketio.on('monitor_command_exec')
+def monitor_client_command(message):
+    r_server =  message['r_server']
+    duration = message['duration']
+    r_list = r_server.split(':')
+    if len(r_list) > 2:
+        r_monitor = MonitorThread(r_list[0], r_list[1], r_list[2])
+    else:
+        r_monitor = MonitorThread(r_list[0], r_list[1])
+
+    r_monitor.setDaemon(True)
+    r_monitor.start();
+    t = Timer(duration, stopMonitor,[r_monitor])
+    t.start()
+
 
 @socketio.on('connect')
 def client_connect():
@@ -192,6 +222,7 @@ def signal_handler(signal, frame):
 def client_disconnect():
     print 'Client disconnected'
 
+
 # start all of the redis info monitor threads
 for r in REDIS_SERVER:
     r_list = r.split(':')
@@ -202,8 +233,9 @@ for r in REDIS_SERVER:
     r_info.setDaemon(True)
     r_info.start()
     all_thread.append(r_info)
+    
 
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
-    socketio.run(app, host='0.0.0.0', port=5000)
+    socketio.run(app, host='0.0.0.0', port=3000)

@@ -37,6 +37,16 @@ http://www.no13bus.com:5000
 ![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/4.png)
 ![version 0.2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
+![version 0.4](images/monitor.png)
+
+
+## Version 0.4
+- new feature: A query analyzer that parses Redis' MONITOR command,inspiration from [redis-faina](https://github.com/facebookarchive/redis-faina)
+- script for generating load 
+  
+  ```
+  python redis-fill-data.py
+  ```
 
 ## Version 0.3
 - docker support: you can pull the [docker image of redispapa](https://registry.hub.docker.com/u/sinchb/redispapa/) from docker hub
