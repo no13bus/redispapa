@@ -18,7 +18,7 @@
 - highchart
 
 ## demo website
-http://www.no13bus.com:5000
+http://redispapa.no13bus.com
 
 
 ## 说明
