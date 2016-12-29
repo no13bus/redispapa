@@ -22,7 +22,7 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 - [Highchart](http://www.highcharts.com/)
 
 ## Demo website
-http://www.no13bus.com:5000
+http://redispapa.no13bus.com
 
 
 ## Project Details
