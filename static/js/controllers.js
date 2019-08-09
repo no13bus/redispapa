@@ -110,8 +110,8 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socke
         seriesArray[0].data = [];
         for (var i = 0; i < cmd.length; i++) {
             seriesArray[0].data.push({
-                x: Date.parse(cmd[i].x),
-                y: cmd[i].y
+                x: (new Date(Date.parse(cmd[i].x)+8*60*60*1000).getTime()),
+		y: cmd[i].y
             });
         }
     }
@@ -123,12 +123,12 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socke
         seriesArray[1].data = [];
         for (var i = 0; i < cpu.length; i++) {
             seriesArray[0].data.push({
-                x: Date.parse(cpu[i].x),
-                y: cpu[i].y_s
+                x: (new Date(Date.parse(cpu[i].x)+8*60*60*1000).getTime()),
+		y: cpu[i].y_s
             });
             seriesArray[1].data.push({
-                x: Date.parse(cpu[i].x),
-                y: cpu[i].y_u
+                x: (new Date(Date.parse(cpu[i].x)+8*60*60*1000).getTime()),
+		y: cpu[i].y_u
             });
         }
     }
@@ -140,11 +140,11 @@ myApp.controller('RedisCtl', function($scope, $routeParams, $filter, $sce, socke
             seriesArray[1].data = [];
             for (var i = 0; i < mem.length; i++) {
                 seriesArray[0].data.push({
-                    x: Date.parse(mem[i].x),
-                    y: mem[i].y_mem
+                    x: (new Date(Date.parse(mem[i].x)+8*60*60*1000).getTime()),
+		    y: mem[i].y_mem
                 });
                 seriesArray[1].data.push({
-                    x: Date.parse(mem[i].x),
+                    x: (new Date(Date.parse(mem[i].x)+8*60*60*1000).getTime()),
                     y: mem[i].y_rss
                 });
             }
