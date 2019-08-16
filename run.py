@@ -93,6 +93,8 @@ class RedisInfo(threading.Thread):
     def run(self):
         while 1:
             try:
+                if self.event.isSet():
+                    return
                 redis_info = self.client.info()
                 self.nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S %Z")
                 # status
