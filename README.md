@@ -1,6 +1,10 @@
 # RedisPAPA
+
 > 利用redis的`info`信息对redis的使用情况进行监控。用到的技术：angular flask socket.io. PAPA是Dad的意思。
 官方文档推荐使用info，而不是monitor(因为其会大大降低redis的负载)。
+=======
+we use `redis info` to monitor the redis usage. PAPA means a father who is monitoring the redis.
+>  according to the [redis doc](http://redis.io/commands/info), it is be recommanded to use `info` other than `monitor`.
 
 ================
 
@@ -53,6 +57,19 @@ docker run -d -p 5000:5000 calmkart/redispapa-sqlite:v0.0.1
 - highchart
 
 ## demo website
+=======
+- check out the file `config.py` and make your own configure according to your redis servers.
+- the REDIS_SERVER should be formated like this `['ip:port:password', 'ip:port', .....]`
+- type this command `python run.py`, then you can watch it in `http://127.0.0.1:5000`
+- we recommand use this command to deploy: `gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker run:app -b 0.0.0.0:5000`
+
+## The tech we use
+- [Angular](https://github.com/angular/angular)
+- [Flask](https://github.com/mitsuhiko/flask)
+- [Socket.io](http://socket.io/)
+- [Highchart](http://www.highcharts.com/)
+
+## Demo website
 http://redispapa.no13bus.com
 
 
