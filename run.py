@@ -5,20 +5,49 @@ import signal
 import sys
 import time
 import redis
+import os
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, render_template, session, request, send_from_directory, make_response
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, disconnect
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 from gevent import monkey
 monkey.patch_all()
 from config import *
 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, 'redispapa.db')
+
+
 app = Flask(__name__)
 app.debug = True
 app.config.from_object('config')
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + db_path
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
 socketio = SocketIO(app)
 all_thread = []
 
 __version__ = '0.3'
+
+
+class RedisObj(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    host = db.Column(db.String(120))
+    port = db.Column(db.Integer)
+    password = db.Column(db.String(120))
+
+    def __init__(self, host=None, port=None, password=None):
+        self.host = host
+        self.port = port
+        self.password = password
+
+    def __repr__(self):
+        return '<Redis %r>' % self.host
+
 
 class RedisInfo(threading.Thread):
     """threads for RedisInfo"""
@@ -64,6 +93,8 @@ class RedisInfo(threading.Thread):
     def run(self):
         while 1:
             try:
+                if self.event.isSet():
+                    return
                 redis_info = self.client.info()
                 self.nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S %Z")
                 # status
@@ -150,7 +181,6 @@ class RedisInfo(threading.Thread):
     def stop(self):
         self.event.set()
 
-
 @app.route('/')
 def index():
     return make_response(open('templates/index.html').read())
@@ -158,7 +188,7 @@ def index():
 
 @socketio.on('event')
 def client_message(message):
-    servers = [':'.join(s.split(':')[:2]) for s in REDIS_SERVER]
+    servers = [r.host+":"+str(r.port) for r in RedisObj.query.all()]
     emit('servers', {'data': servers})
 
 @socketio.on('command_exec')
@@ -192,17 +222,55 @@ def signal_handler(signal, frame):
 def client_disconnect():
     print 'Client disconnected'
 
+
 # start all of the redis info monitor threads
-for r in REDIS_SERVER:
-    r_list = r.split(':')
-    if len(r_list) > 2:
-        r_info = RedisInfo(r_list[0], r_list[1], r_list[2])
+for r in RedisObj.query.all():
+    if r.password:
+        r_info = RedisInfo(r.host, r.port, r.password)
     else:
-        r_info = RedisInfo(r_list[0], r_list[1])
+        r_info = RedisInfo(r.host, r.port)
     r_info.setDaemon(True)
     r_info.start()
     all_thread.append(r_info)
 
+admin = Admin(app, name='redispapa')
+admin.add_view(ModelView(RedisObj, db.session))
+
+
+def update_redis_server_thread():
+    try:
+        print([t.host+":"+str(t.port) for t in all_thread])
+        new_all_thread = []
+        for r in RedisObj.query.all():
+            if r.password:
+                r_info = RedisInfo(r.host, r.port, r.password)
+            else:
+                r_info = RedisInfo(r.host, r.port)
+            new_all_thread.append(r_info)
+
+        def redis_info_set_helper(list_a, list_b):
+            '''返回list_a里有list_b里没有的元素list'''
+            list_a_sub_b = []
+            for a in list(set(list_a)):
+                if (a.host+":"+str(a.port)) in [b.host+":"+str(b.port) for b in list_b]:
+                    continue
+                list_a_sub_b.append(a)
+            return list_a_sub_b
+        remove_set = set(redis_info_set_helper(all_thread, new_all_thread))
+        create_set = set(redis_info_set_helper(new_all_thread, all_thread))
+        for t in list(remove_set):
+            all_thread.remove(t)
+            t.stop()
+        for t in list(create_set):
+            t.setDaemon(True)
+            t.start()
+            all_thread.append(t)
+    except Exception as e:
+        print(e)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=update_redis_server_thread, trigger='cron', second='*/20')
+scheduler.start()
 
 if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
