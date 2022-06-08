@@ -6,4 +6,4 @@ TABLE_MAX_ROWS = 10
 # flaks debug mode
 DEBUG = False
 SECRET_KEY = 'temporary_secret_key'
-
+REDIS_SERVER = ['127.0.0.1:6379:123456']
