@@ -5,6 +5,10 @@ __pycache__/
 # C extensions
 *.so
 
+dump.rdb
+
+.vscode/
+
 # Distribution / packaging
 .Python
 env/

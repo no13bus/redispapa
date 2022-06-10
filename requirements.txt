@@ -1,6 +1,6 @@
-redis>=2.10.3
-Flask==1.0
-Flask-SocketIO==4.3.1
-gevent==1.0.1
+Flask==2.1.2
+Flask-SocketIO==5.2.0
+gevent==21.12.0
 gevent-socketio==0.3.6
-gevent-websocket==0.9.3
+gevent-websocket==0.10.1
+redis==4.3.3
