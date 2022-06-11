@@ -159,12 +159,12 @@ def index():
     return make_response(open('templates/index.html').read())
 
 
-@socketio.on('event')
+@socketio.on('/socket.io/event')
 def client_message(message):
     servers = [':'.join(s.split(':')[:2]) for s in REDIS_SERVER]
     emit('servers', {'data': servers})
 
-@socketio.on('command_exec')
+@socketio.on('/socket.io/command_exec')
 def client_command(message):
     args = message['args']
     args = tuple(args.split(','))
@@ -180,7 +180,7 @@ def client_command(message):
         emit('result', {'data': 'I can not find the redis server'})
 
 
-@socketio.on('connect')
+@socketio.on('/socket.io/connect')
 def client_connect():
     print('connected ....')
 
@@ -191,7 +191,7 @@ def signal_handler(signal, frame):
     print('Now all of info thread are stopped!')
     sys.exit(0)
 
-@socketio.on('disconnect')
+@socketio.on('/socket.io/disconnect')
 def client_disconnect():
     print('Client disconnected')
 

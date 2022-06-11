@@ -1,0 +1,73 @@
+body {
+  background: var(--main-bg-color);
+}
+
+header {
+  background-color: #001528;
+}
+
+.header-wrapper {
+  margin: 0 auto;
+  height: 52px;
+  min-width: var(--main-min-width);
+  max-width: var(--main-max-width);
+  display: flex;
+  align-items: center;
+
+  .header-logo {
+    margin-right: 40px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .header-placeholder {
+    flex-grow: 1;
+  }
+
+  .header-select {
+    display: flex;
+    .select-options{
+      width: 180px;
+    }
+  }
+
+}
+
+
+
+
+nav{
+  display: flex;
+  .header-nav{
+    list-style: none;
+    display: flex;
+    margin: 0;
+    li{
+      margin-right: 30px;
+    }
+    
+  }
+}
+
+
+
+
+// charts
+
+.charts-container{
+  margin: 0 auto;
+  height: 400px;
+  min-width: var(--main-min-width);
+  max-width: var(--main-max-width);
+  display: flex;
+  justify-content: space-between;
+  gap:30px;
+
+  .charts-item{
+    border: 2px solid red;
+    height: 360px;
+    width: 360px;
+  }
+  
+}
+
