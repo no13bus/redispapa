@@ -1,15 +1,18 @@
 ## 开始使用
-- `pip install -r requirements.txt`
+- `cd backend && pip3 install -r requirements.txt`
 - 配置好config.py内的需要监控的redis服务器的相关信息.
 - REDIS_SERVER服务器的类型这样 `['ip:port:pawword', 'ip:port', .....]`
-- `python run.py` 即可进行redis服务监控
+- `python3 run.py` 即可进行redis服务监控
 - 如果线上部署的话，推荐使用gunicorn部署. `gunicorn --worker-class socketio.sgunicorn.GeventSocketIOWorker run:app -b 0.0.0.0:5000`
 
 ## 使用到的技术
-- angular
-- flask
-- socket.io
-- highchart
+- [Python3](https://docs.python.org/3/)
+- [React](https://github.com/facebook/react)
+- [Flask](https://github.com/pallets/flask)
+- [Socket.io](http://socket.io/)
+- [Ant Design](https://ant.design/)
+- [Ant Design Charts](https://charts.ant.design/)
+- [Vite](https://vitejs.dev/)
 
 
 
@@ -39,6 +42,11 @@ cd /path/to/your/redispapa/
 docker build -t=your-redispapa-tag .
 ```
 
+## Version 0.4
+- 将项目中用到的框架升级到最新版本，Python升级到3.x, flask升级到2.x, socketIO升级到4.x
+- 使用Vite和React来构建前端页面, 使用前后端分离的方式来开发项目
+
+
 ## version 0.2
 - 加入新特性: 在前端执行redis命令, 返回执行结果。
 - 执行方法如下: 网页上的command内写redis命令, args写命令的各个参数.
@@ -50,7 +58,3 @@ docker build -t=your-redispapa-tag .
 
 ## 相关项目连接
 - [redis stat](https://github.com/junegunn/redis-stat)
-- [highchart-ng](https://github.com/pablojim/highcharts-ng)
-- [ng-socket-io](https://github.com/mbenford/ngSocketIO)
-- [angular](https://github.com/angular/angular)
-- [flask](https://github.com/mitsuhiko/flask)

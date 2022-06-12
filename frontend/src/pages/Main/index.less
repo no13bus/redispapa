@@ -26,7 +26,8 @@ header {
 
   .header-select {
     display: flex;
-    .select-options{
+
+    .select-options {
       width: 180px;
     }
   }
@@ -36,38 +37,58 @@ header {
 
 
 
-nav{
+nav {
   display: flex;
-  .header-nav{
+
+  .header-nav {
     list-style: none;
     display: flex;
     margin: 0;
-    li{
+
+    li {
       margin-right: 30px;
     }
-    
+
   }
 }
 
 
-
-
-// charts
-
-.charts-container{
-  margin: 0 auto;
-  height: 400px;
+.content {
   min-width: var(--main-min-width);
   max-width: var(--main-max-width);
-  display: flex;
-  justify-content: space-between;
-  gap:30px;
+  margin: 0 auto;
+}
 
-  .charts-item{
-    border: 2px solid red;
-    height: 360px;
-    width: 360px;
+.title {
+  font-weight: bold;
+  font-size: 35px;
+  color: var(--main-color)
+}
+
+// charts
+.charts {
+  .charts-container {
+    height: 400px;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+
+    .charts-item {
+      height: 360px;
+      width: 360px;
+    }
   }
+}
+
+// others
+.others{
+  display: flex;
+  gap: 30px;
+  // justify-content: space-between;
   
 }
 
+footer{
+  text-align: center;
+  padding: 20px;
+}

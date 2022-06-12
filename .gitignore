@@ -60,3 +60,4 @@ docs/_build/
 target/
 .idea
 config_dev.py
+/.DS_Store

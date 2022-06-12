@@ -30,9 +30,9 @@ class RedisInfo(threading.Thread):
         self.port = port
         self.password = password
         self.client = redis.StrictRedis(host=self.host, port=self.port, password=self.password)
-        self.status = {}
+        self.status = []
         self.table = []
-        self.table_row = []
+        self.table_row = {}
         self.commands_chart = []
         self.mem_chart = []
         self.cpu_chart = []
@@ -58,10 +58,15 @@ class RedisInfo(threading.Thread):
             result = cmd_method(*args[1:])
             if not result:
                 result = 'None'
+            else:
+                if isinstance(result, bool):
+                    result = str(result)
+                else:
+                    result = str(result, encoding='utf-8')
             emit('result', {'data': result, 'm_type': 'info'})
         except Exception as ex:
-            emit('result', {'data': ex.message, 'm_type': 'error'})
-            print(' %s ' % ex.message)
+            emit('result', {'data': str(ex), 'm_type': 'error'})
+            print(' %s ' % ex)
 
     def run(self):
         while 1:
@@ -71,46 +76,46 @@ class RedisInfo(threading.Thread):
                 redis_info = self.client.info()
                 self.nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S %Z")
                 # status
-                self.status['redis_server_ip'] = '%s:%s' % (self.host, self.port)
-                self.status['redis_version'] = redis_info['redis_version']
-                self.status['redis_mode'] = redis_info['redis_mode'] if 'redis_mode' in redis_info else ''
-                self.status['process_id'] = redis_info['process_id']
-                self.status['uptime_in_seconds'] = redis_info['uptime_in_seconds']
-                self.status['uptime_in_days'] = redis_info['uptime_in_days']
-                self.status['role'] = redis_info['role']
-                self.status['connected_slaves'] = redis_info['connected_slaves']
-                self.status['rdb_bgsave_in_progress'] = redis_info['rdb_bgsave_in_progress'] if 'rdb_bgsave_in_progress' in redis_info else ''
-                self.status['rdb_last_save_time'] = redis_info['rdb_last_save_time'] if 'rdb_last_save_time' in redis_info else ''
-
+                self.status = []
+                self.status.append({"key":'redis_server_ip' , "value": '%s:%s' % (self.host, self.port)})
+                self.status.append({"key":'redis_version', "value": redis_info['redis_version']})
+                self.status.append({"key":'redis_mode', "value": redis_info['redis_mode'] if 'redis_mode' in redis_info else ''})
+                self.status.append({"key":'process_id',  "value":redis_info['process_id']})
+                self.status.append({"key":'uptime_in_seconds', "value": redis_info['uptime_in_seconds']})
+                self.status.append({"key":'uptime_in_days', "value": redis_info['uptime_in_days']})
+                self.status.append({"key":'role', "value": redis_info['role']})
+                self.status.append({"key":'connected_slaves',"value":  redis_info['connected_slaves']})
+                self.status.append({"key":'rdb_bgsave_in_progress', "value": redis_info['rdb_bgsave_in_progress'] if 'rdb_bgsave_in_progress' in redis_info else ''})
+                self.status.append({"key":'rdb_last_save_time', "value": redis_info['rdb_last_save_time'] if 'rdb_last_save_time' in redis_info else ''})
                 # table
-                self.table_row = []
+                self.table_row = {}
                 # nowtime = datetime.datetime.now().strftime("%H:%M:%S")
-                self.table_row.append(self.nowtime)
+                self.table_row["time"] = self.nowtime
                 self.used_cpu_user = redis_info['used_cpu_user']
                 self.used_cpu_sys = redis_info['used_cpu_sys']
-                self.table_row.append(self.used_cpu_user)
-                self.table_row.append(self.used_cpu_sys)
-                self.table_row.append(redis_info['connected_clients'])
-                self.table_row.append(redis_info['blocked_clients'])
+                self.table_row["us"] = (self.used_cpu_user)
+                self.table_row["sy"] = (self.used_cpu_sys)
+                self.table_row["cl"] = (redis_info['connected_clients'])
+                self.table_row["bcl"] = (redis_info['blocked_clients'])
                 self.mem = round(redis_info['used_memory'] / 1024 / 1024, 2)
-                self.table_row.append('%sM' % self.mem)
+                self.table_row["mem"] = ('%sM' % self.mem)
                 self.mem_rss = round(redis_info['used_memory_rss'] / 1024 / 1024, 2)
-                self.table_row.append('%sM' % self.mem_rss)
+                self.table_row["rss"] = ('%sM' % self.mem_rss)
                 keys = sum([v['keys'] for k, v in redis_info.items() if k.startswith('db') and 'keys' in v])
-                self.table_row.append(keys)
+                self.table_row["keys"] = (keys)
                 if len(self.table) == 0:
-                    self.table_row.append(0)
-                    self.table_row.append(0)
-                    self.table_row.append(0)
-                    self.table_row.append(0)
-                    self.table_row.append(0)
+                    self.table_row["cmd"] = (0)
+                    self.table_row["exp"] = (0)
+                    self.table_row["evt"] = (0)
+                    self.table_row["hit"] = (0)
+                    self.table_row["mis"] = (0)
                 else:
                     self.commands_per_seconds = (redis_info['total_commands_processed'] - self.last_total_commands_processed) / INFO_INTERVAL
-                    self.table_row.append(self.commands_per_seconds)
-                    self.table_row.append((redis_info['expired_keys'] - self.last_expired_keys) / INFO_INTERVAL)
-                    self.table_row.append((redis_info['evicted_keys'] - self.last_evicted_keys) / INFO_INTERVAL)
-                    self.table_row.append((redis_info['keyspace_hits'] - self.last_keyspace_hits) / INFO_INTERVAL)
-                    self.table_row.append((redis_info['keyspace_misses'] - self.last_keyspace_misses) / INFO_INTERVAL)
+                    self.table_row["cmd"] = (self.commands_per_seconds)
+                    self.table_row["exp"] = ((redis_info['expired_keys'] - self.last_expired_keys) / INFO_INTERVAL)
+                    self.table_row["evt"] = ((redis_info['evicted_keys'] - self.last_evicted_keys) / INFO_INTERVAL)
+                    self.table_row["hit"] = ((redis_info['keyspace_hits'] - self.last_keyspace_hits) / INFO_INTERVAL)
+                    self.table_row["mis"] = ((redis_info['keyspace_misses'] - self.last_keyspace_misses) / INFO_INTERVAL)
 
                 self.last_total_commands_processed = redis_info['total_commands_processed']
                 self.last_expired_keys = redis_info['expired_keys']
@@ -118,9 +123,9 @@ class RedisInfo(threading.Thread):
                 self.last_keyspace_hits = redis_info['keyspace_hits']
                 self.last_keyspace_misses = redis_info['keyspace_misses']
                 if redis_info['aof_enabled']:
-                    self.table_row.append(redis_info['aof_current_size'])
+                    self.table_row["aofcs"] = (redis_info['aof_current_size'])
                 else:
-                    self.table_row.append(0)
+                    self.table_row["aofcs"] = (0)
 
                 self.table.append(self.table_row)
                 if len(self.table) > TABLE_MAX_ROWS:

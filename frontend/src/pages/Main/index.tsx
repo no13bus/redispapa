@@ -2,246 +2,166 @@
 import './index.less'
 
 
-import { Breadcrumb, message, Select } from 'antd';
-import React, { useState, useEffect, useRef } from 'react';
-import socketIOClient from "socket.io-client";
+import { message, Select, Alert } from 'antd';
+import React, { useState, useEffect } from 'react';
+import socketIOClient, { Socket } from "socket.io-client";
+import { ChartData, ChartType } from '@/data.d'
 import {
   GithubOutlined,
 } from '@ant-design/icons';
-import { Line } from '@ant-design/charts';
+import { formatDate }  from '@/utils/helper';
 
 import TableData from '@/components/TableData'
+import Chart from '@/components/Chart'
+import Stat from '@/components/Stat'
+import Command from '@/components/Command'
 
 
 
 const { Option } = Select;
 
-
 const Main: React.FC = () => {
 
-  const [socket, setSocket] = useState(null)
+  const [socket, setSocket] = useState<Socket>()
 
-  let ws = useRef()
-
-  if(ws.current == null){
-    ws.current = socketIOClient()
-
-    ws.current.on("connect", () => {
-      console.log(ws.current.id); // x8WIv7-mJelg7on_ALbx
-    });
-
-    ws.current.on("disconnect", () => {
-      console.log(ws.current.id); // x8WIv7-mJelg7on_ALbx
-    });
-
-    ws.current.on('servers', () => {
-      console.log("aaaaa")
-      // setServers(msg.data)
-      // setServerSelected(msg.data[0])
-    });
-
-  }
-
-  
-
-
-
-  const [errorMsg, setErrorMsg] = useState("");
   const [servers, setServers] = useState<string[]>([]);
   const [serverSelected, setServerSelected] = useState("");
 
+  const [cmd, setCmd] = useState<ChartData[]>([]);
+  const [cpu, setCpu] = useState<ChartData[]>([]);
+  const [mem, setMem] = useState<ChartData[]>([]);
+  const [tableData, setTableData] = useState([]);
+  const [serverStat, setServerStat] = useState([]);
+
   const [execResult, setExecResult] = useState("")
-
-  const data = [
-    { year: '1991', value: 3 },
-    { year: '1992', value: 4 },
-    { year: '1993', value: 3.5 },
-    { year: '1994', value: 5 },
-    { year: '1995', value: 4.9 },
-    { year: '1996', value: 6 },
-    { year: '1997', value: 7 },
-    { year: '1998', value: 9 },
-    { year: '1999', value: 13 },
-  ];
-
-  const config = {
-    data,
-    xField: 'time',
-    yField: 'value',
-    point: {
-      size: 5,
-      shape: 'diamond',
-    },
-  };
+  const [execStat, setExecStat] = useState("")
 
 
-
-  const handler_cmd = (cmd) => {
-    // body...
-    // var seriesArray = $scope.chartConfig_cmd.series;
-    // seriesArray[0].data = [];
-    // for (var i = 0; i < cmd.length; i++) {
-    //   seriesArray[0].data.push({
-    //     x: (new Date(Date.parse(cmd[i].x) + 8 * 60 * 60 * 1000).getTime()),
-    //     y: cmd[i].y
-    //   });
-    // }
+  const handler_cmd = (data) => {
+    let result = []
+    for (var i = 0; i < data.length; i++) {
+      let item = {
+        time: data[i].x.substring(11),
+        value: data[i].y,
+        category: 'commands/s'
+      }
+      result.push(item)
+    }
+    setCmd(result)
   }
 
-  const handler_cpu = (cpu) => {
-    // body...
-    // var seriesArray = $scope.chartConfig_cpu.series;
-    // seriesArray[0].data = [];
-    // seriesArray[1].data = [];
-    // for (var i = 0; i < cpu.length; i++) {
-    //   seriesArray[0].data.push({
-    //     x: (new Date(Date.parse(cpu[i].x) + 8 * 60 * 60 * 1000).getTime()),
-    //     y: cpu[i].y_s
-    //   });
-    //   seriesArray[1].data.push({
-    //     x: (new Date(Date.parse(cpu[i].x) + 8 * 60 * 60 * 1000).getTime()),
-    //     y: cpu[i].y_u
-    //   });
-    // }
+  const handler_cpu = (data) => {
+    let result = [];
+    for (var i = 0; i < data.length; i++) {
+      result.push({
+        time: data[i].x.substring(11),
+        value: data[i].y_s,
+        category: 'sys'
+      });
+      result.push({
+        time: data[i].x.substring(11),
+        value: data[i].y_u,
+        category: 'user'
+      });
+    }
+    setCpu(result)
   }
 
-  const handler_mem = (mem) => {
-    // body...
-    // var seriesArray = $scope.chartConfig_mem.series;
-    // seriesArray[0].data = [];
-    // seriesArray[1].data = [];
-    // for (var i = 0; i < mem.length; i++) {
-    //   seriesArray[0].data.push({
-    //     x: (new Date(Date.parse(mem[i].x) + 8 * 60 * 60 * 1000).getTime()),
-    //     y: mem[i].y_mem
-    //   });
-    //   seriesArray[1].data.push({
-    //     x: (new Date(Date.parse(mem[i].x) + 8 * 60 * 60 * 1000).getTime()),
-    //     y: mem[i].y_rss
-    //   });
-    // }
+  const handler_mem = (data) => {
+    let result = []
+    for (var i = 0; i < data.length; i++) {
+      result.push({
+        time: data[i].x.substring(11),
+        value: data[i].y_mem,
+        category: 'memory'
+      });
+      result.push({
+        time: data[i].x.substring(11),
+        value: data[i].y_rss,
+        category: 'memory_rss'
+      });
+    }
+    setMem(result)
   }
 
 
-  // const connectWebSocket = () => {
-  //   //開啟
-  //   setSocket(socketIOClient())
-  // }
 
-  // const wsConnect = () => {
-  //   //對 getMessage 設定監聽，如果 server 有透過 getMessage 傳送訊息，將會在此被捕捉
-  //   socket.on("connect", () => {
-  //     console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-  //   });
-  // }
+  const wsConnect = () => {
+    if(socket){
+      socket.on("connect", () => {
+        socket.emit('event', {
+          data: 'I am connected!'
+        });
+      });
+    }
+    
+  }
 
-  // const wsDisConnect = () => {
-  //   //對 getMessage 設定監聽，如果 server 有透過 getMessage 傳送訊息，將會在此被捕捉
-  //   socket.on('disconnect', function () {
-  //     message.warn('Oh! The server is disconnected.Please check!');
-  //     //setErrorMsg('Oh! The server is disconnected.Please check!');
-  //   });
-  // }
+  const wsDisConnect = () => {
+    if(socket){
+      socket.on('disconnect', function () {
+        message.warn('Oh! The server is disconnected.Please check!');
+      });
+    }
+    
+  }
 
-  // const wsServers = () => {
-  //   //對 getMessage 設定監聽，如果 server 有透過 getMessage 傳送訊息，將會在此被捕捉
-  //   socket.on('servers', msg => {
-  //     setServers(msg.data)
-  //     setServerSelected(msg.data[0])
-  //   });
-  // }
-
-  // const wsResult = () => {
-  //   //對 getMessage 設定監聽，如果 server 有透過 getMessage 傳送訊息，將會在此被捕捉
-  //   socket.on('result', msg => {
-  //     console.log(msg.m_type);
-  //     if (msg.m_type == 'info') {
-  //       //setExecResult("Time: " + $filter('date')(new Date(), "hh:mm:ss") + "<span class='text-info'>" + " Result: " + msg.data + "</span>");
-  //       setExecResult("Time: " + "2022-06-01 " + " Result: " + msg.data);
-  //     } else {
-  //       setExecResult("Time: " + "2022-04-01 " + " Result: " + msg.data);
-  //       //$scope.result = $sce.trustAsHtml("Time: " + $filter('date')(new Date(), "hh:mm:ss") + "<span class='text-danger'>" + " Result: " + msg.data + "</span>");
-  //     }
-  //   });
-  // }
+  const wsServers = () => {
+    if(socket){
+      socket.on('servers', msg => {
+        setServerSelected(msg.data[0])
+        setServers(msg.data)
+      });
+    }
+    
+  }
 
 
+  const wsResponse = () => {
+    if(socket){
+      socket.on('response', msg => {
+        if (serverSelected!="" && serverSelected == msg.server) {
+          handler_cmd(msg.commands)
+          handler_cpu(msg.cpu);
+          handler_mem(msg.mem);
+    
+          setTableData(msg.table)
+          setServerStat(msg.stat)
+        }
+      });
+    }
+    
+  }
 
+  const wsResult = () => {
+    if(socket){
+      socket.on('result', (msg) => {
+        setExecResult(msg.data)
+        if (msg.m_type == 'info') {
+          setExecStat("info")
+        } else {
+          setExecStat("error")
+        }
+      });
+    }
+  }
 
 
   useEffect(() => {
-    ///connectWebSocket()
-
+    setSocket(socketIOClient())
   }, []);
 
+  wsConnect()
+  wsDisConnect()
+  wsServers()
+  wsResult()
+  wsResponse()
 
-  // useEffect(() => {
-
-  //   if (socket) {
-  //     //連線成功在 console 中打印訊息
-  //     console.log('success connect!')
-  //     //設定監聽
-  //     wsConnect()
-  //     //wsDisConnect()
-  //     wsServers()
-  //     wsResult()
-  //   }
-
-
-    // const socket = socketIOClient();
-    // socket.on("connect", () => {
-    //   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    // });
-
-    // socket.on("disconnect", () => {
-    //   console.log(socket.id); // undefined
-    // });
-
-
-    // socket.on('connect', () => {
-    //   socket.emit('event', {
-    //     data: 'I am connected!'
-    //   });
-    // });
-
-    // socket.on('disconnect', function () {
-    //   message.warn('Oh! The server is disconnected.Please check!');
-    //   //setErrorMsg('Oh! The server is disconnected.Please check!');
-    // });
-
-    // socket.on('result', msg => {
-    //   console.log(msg.m_type);
-    //   if (msg.m_type == 'info') {
-    //     //setExecResult("Time: " + $filter('date')(new Date(), "hh:mm:ss") + "<span class='text-info'>" + " Result: " + msg.data + "</span>");
-    //     setExecResult("Time: " + "2022-06-01 " + " Result: " + msg.data);
-    //   } else {
-    //     setExecResult("Time: " + "2022-04-01 " + " Result: " + msg.data);
-    //     //$scope.result = $sce.trustAsHtml("Time: " + $filter('date')(new Date(), "hh:mm:ss") + "<span class='text-danger'>" + " Result: " + msg.data + "</span>");
-    //   }
-    // });
-
-    // socket.on('servers', msg => {
-    //   setServers(msg.data)
-    //   setServerSelected(msg.data[0])
-    // });
-
-    // socket.on('response', msg => {
-    //   if (serverSelected == msg.server) {
-    //     console.log("msg")
-    //     console.log(msg)
-    //     //$scope.stat = msg.stat;
-    //     //$scope.table = msg.table;
-    //     handler_cmd(msg.commands);
-    //     handler_cpu(msg.cpu);
-    //     handler_mem(msg.mem);
-    //   }
-    // });
-
-
-
-
-
-  // }, [socket]);
+  const onSubmit = (values: any) => {
+    if(socket){
+      socket.emit('command_exec', { command: values.command, args: values.args, r_server: serverSelected });
+    }
+  }
 
 
 
@@ -261,7 +181,7 @@ const Main: React.FC = () => {
 
           </div>
           <div className="header-select">
-            <Select value={serverSelected} className="select-options" onChange={() => { }}>
+            <Select value={serverSelected} className="select-options" onChange={(value) => { setServerSelected(value) }}>
               {servers.length > 0 && servers.map(serverItem =>
                 <Option key={serverItem} value={serverItem}>{serverItem}</Option>
               )
@@ -273,30 +193,43 @@ const Main: React.FC = () => {
 
       <div className="content">
         <div className="charts">
-          <div className="charts-title">Charts</div>
+          <div className="title">Charts</div>
           <div className="charts-container">
-            <div className="charts-item"><Line {...config} /></div>
-            <div className="charts-item"><Line {...config} /></div>
-            <div className="charts-item"><Line {...config} /></div>
+            <Chart chartTitle='commands/s' chartData={cmd} />
+            <Chart chartTitle='used_cpu' chartData={cpu} />
+            <Chart chartTitle='used_memory' chartData={mem} />
           </div>
         </div>
 
-        <TableData />
+        <div className="tables">
+          <div className="title">Table</div>
+          <TableData dataSource={tableData} />
+        </div>
 
-
-        {/* <div className="tables">
-          <div className="tables-title">Charts</div>
-          <div className="tables-container">
-            
+        <div className="others">
+          <div>
+            <div className="title">Redis-Server</div>
+            <Stat dataSource={serverStat} />
           </div>
-        </div> */}
+
+          <div>
+            <div className="title">Command Exec</div>
+            <Command onSubmit={onSubmit} />
+            {execResult && <Alert
+              style={{ marginTop:"20px" }}
+              message={execStat=="info"? "Success" : "Warning"}
+              description={`Time: ${formatDate(new Date())} Result: ${execResult} `}
+              type={execStat=="info"? "success" : "warning"}
+              showIcon
+              closable
+            />}
+          </div>
+        </div>
+
 
       </div>
 
-
-
-
-
+      <footer>RedisPAPA ©2022 Created by <a href='https://github.com/no13bus' target="_blank">no13bus</a></footer>
     </div>
 
 
