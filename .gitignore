@@ -16,7 +16,7 @@ frontend/node_modules/
 env/
 build/
 develop-eggs/
-dist/
+# dist/
 downloads/
 eggs/
 lib/

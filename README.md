@@ -25,7 +25,9 @@ we use `redis info` to monitor the redis usage. PAPA means a father who is monit
 - [Ant Design Charts](https://charts.ant.design/)
 - [Vite](https://vitejs.dev/)
 
+## demo website
 
+[https://redispapa.v2j.tech](https://redispapa.v2j.tech)
 
 ## Project Details
 - we do not use any database to store the redis information, we store the data in the memory.

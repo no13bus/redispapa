@@ -38,7 +38,7 @@ const Main: React.FC = () => {
 
 
   const handler_cmd = (data) => {
-    let result = []
+    let result : ChartData[] = []
     for (var i = 0; i < data.length; i++) {
       let item = {
         time: data[i].x.substring(11),
@@ -51,7 +51,7 @@ const Main: React.FC = () => {
   }
 
   const handler_cpu = (data) => {
-    let result = [];
+    let result: ChartData[] = [];
     for (var i = 0; i < data.length; i++) {
       result.push({
         time: data[i].x.substring(11),
@@ -68,7 +68,7 @@ const Main: React.FC = () => {
   }
 
   const handler_mem = (data) => {
-    let result = []
+    let result:ChartData[] = []
     for (var i = 0; i < data.length; i++) {
       result.push({
         time: data[i].x.substring(11),
