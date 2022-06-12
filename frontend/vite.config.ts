@@ -5,6 +5,8 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+
+
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'src')}/`,
@@ -33,10 +35,16 @@ export default defineConfig({
     }
   },
 
-
-  '/socket.io222': {
-    target: 'ws://localhost:5000',
-    ws: true
+  server: {
+    proxy: {
+      // Proxying websockets or socket.io
+      '/socket.io': {
+        target: 'ws://localhost:5000',
+        ws: true
+      }
+    }
   }
+
+
   
 })
