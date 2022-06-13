@@ -14,7 +14,25 @@
 - [Ant Design Charts](https://charts.ant.design/)
 - [Vite](https://vitejs.dev/)
 
+## demo website
+[https://redispapa.v2j.tech](https://redispapa.v2j.tech)
 
+## 项目细节
+- 我们不使用任何数据库存储redis的相关信息，数据仅存在于运行内存中
+- 我们使用flask框架开启多个线程, 每个线程对应一个redis服务实例, 使用socket.io将数据传输到前端，前端使用react框架进行实时展示
+- 我们使用react和Vite构建前端应用. 前端使用的是ant design以及ant design charts进行数据展示.
+- 在前端页面，当你选择不同的redis实例的时候，你会立刻看到相应的redis性能数据
+
+## 项目截图
+![1](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/1.png)
+![2](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/2.png)
+![3](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/3.png)
+![4](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/4.png)
+![5](https://raw.githubusercontent.com/no13bus/redispapa/master/screen/5.png)
+
+## Version 0.4
+- 将flask升级到2.x, Python升级到3.x socket-io升级到4.x
+- 前端使用react和Vite来构建
 
 ## version 0.3
 - 支持docker: 现在可以直接从docker hub下载最新的[redispapa的镜像](https://registry.hub.docker.com/u/sinchb/redispapa/):
