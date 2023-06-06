@@ -3688,6 +3688,13 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
+"rollup@>=2.59.0 <2.78.0":
+  version "2.77.3"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.77.3.tgz#8f00418d3a2740036e15deb653bed1a90ee0cc12"
+  integrity sha512-/qxNTG7FbmefJWoeeYJFbHehJ2HNWnjkAFRKzWN/45eNBBF/r8lo992CwcJXEzyVxs5FmfId+vTSTQDb+bxA+g==
+  optionalDependencies:
+    fsevents "~2.3.2"
+
 rollup@^0.25.8:
   version "0.25.8"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.25.8.tgz#bf6ce83b87510d163446eeaa577ed6a6fc5835e0"
@@ -3696,13 +3703,6 @@ rollup@^0.25.8:
     chalk "^1.1.1"
     minimist "^1.2.0"
     source-map-support "^0.3.2"
-
-rollup@^2.59.0:
-  version "2.74.0"
-  resolved "https://registry.npmmirror.com/rollup/-/rollup-2.74.0.tgz#4f460e7979b8ed1f3aa0489059480a504de28b4a"
-  integrity sha512-RRwXTX5+ObPJhcMV6zP3RdHvy90/lBOUfbzL7IKkFjMJGAqeBGZiv9nZWm/DoTESaTE3GBkkzbU9QVN2AuCkjw==
-  optionalDependencies:
-    fsevents "~2.3.2"
 
 rtl-css-js@^1.14.0:
   version "1.15.0"
@@ -4138,15 +4138,15 @@ vite-plugin-imp@^2.2.0:
     param-case "^3.0.4"
     pascal-case "^3.1.2"
 
-vite@^2.9.9:
-  version "2.9.9"
-  resolved "https://registry.npmmirror.com/vite/-/vite-2.9.9.tgz#8b558987db5e60fedec2f4b003b73164cb081c5e"
-  integrity sha512-ffaam+NgHfbEmfw/Vuh6BHKKlI/XIAhxE5QSS7gFLIngxg171mg1P3a4LSRME0z2ZU1ScxoKzphkipcYwSD5Ew==
+vite@^2.9.16:
+  version "2.9.16"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.16.tgz#daf7ba50f5cc37a7bf51b118ba06bc36e97898e9"
+  integrity sha512-X+6q8KPyeuBvTQV8AVSnKDvXoBMnTx8zxh54sOwmmuOdxkjMmEJXH2UEchA+vTMps1xw9vL64uwJOWryULg7nA==
   dependencies:
     esbuild "^0.14.27"
     postcss "^8.4.13"
     resolve "^1.22.0"
-    rollup "^2.59.0"
+    rollup ">=2.59.0 <2.78.0"
   optionalDependencies:
     fsevents "~2.3.2"
 
